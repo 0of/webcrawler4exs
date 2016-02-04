@@ -5,8 +5,10 @@ defmodule Webcrawler4exs.Mixfile do
     [app: :webcrawler4exs,
      version: "0.0.1",
      elixir: "~> 1.1",
+     elixirc_paths: elixirc_paths(Mix.env),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     compilers: [:phoenix] ++ Mix.compilers,
      deps: deps]
   end
 
@@ -15,8 +17,11 @@ defmodule Webcrawler4exs.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
       [mod: {Webcrawler4exs, []}, 
-     applications: [:logger, :httpoison]]
+       applications: [:phoenix, :phoenix_html, :cowboy, :logger, :httpoison, :postgrex]]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "web", "test"]
+  defp elixirc_paths(_),     do: ["lib", "web"]
 
   # Dependencies can be Hex packages:
   #
@@ -28,6 +33,11 @@ defmodule Webcrawler4exs.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-     [{:httpoison, "~> 0.8.0"}]
+     [{:httpoison, "~> 0.8.0"},
+       {:phoenix, "~> 1.1.4"},
+       {:postgrex, ">= 0.0.0"},
+       {:phoenix_html, "~> 2.4"},
+       {:phoenix_live_reload, "~> 1.0", only: :dev},
+       {:cowboy, "~> 1.0"}]
   end
 end
