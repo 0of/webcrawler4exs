@@ -1,4 +1,4 @@
-(ns pagecap.core)
+(ns pagep.core)
 
 (enable-console-print!)
 
@@ -35,6 +35,6 @@
 
 (defn -main
   [& args]
-  (load "" (fn [window] (.showDevTools window) (prn (crawl-links window)))))
+  (load "http://wwww.baidu.com" (fn [window] (.showDevTools window) (prn (crawl-links window)))))
 
 (-main)
