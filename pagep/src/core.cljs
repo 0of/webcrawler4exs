@@ -35,6 +35,6 @@
 
 (defn -main
   [& args]
-  (load "http://wwww.baidu.com" (fn [window] (.showDevTools window) (prn (crawl-links window)))))
+  (load "" (fn [window] (.showDevTools window) (prn (crawl-links window)))))
 
 (-main)
