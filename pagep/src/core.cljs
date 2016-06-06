@@ -1,4 +1,4 @@
-(ns pagecap.core)
+(ns pagep.core)
 
 (enable-console-print!)
 
