@@ -11,7 +11,8 @@
   (let [BrowserWindow (-> "electron"
                           js/require
                           .-BrowserWindow)]
-    (BrowserWindow. (clj->js {:webPreferences {:javascript true
+    (BrowserWindow. (clj->js {:fullscreen true
+                              :webPreferences {:javascript true
                                                :nodeIntegration false
                                                :webSecurity false
                                                :images false
@@ -30,7 +31,7 @@
   [url]
   (let [crypto (js/require "crypto")
         hash (.createHash crypto "sha256")]
-    (.update hash url)
+    (.update hash (.concat url (.toString (js/Date.))))
     (.digest hash "hex")))
 
 (defn- on-saved
@@ -39,8 +40,7 @@
 
 (defn- save-buffer-to-file
   [buffer file-name]
-  (prn file-name)
-  (on-save nil))
+  (.writeFile fs file-name buffer (clj->js {:encoding "binary" :flag "w"}) on-saved))
 
 (defn snapshot
   [window save-dir]
