@@ -3,8 +3,11 @@
 (enable-console-print!)
 
 ;; imports
-(def fs (js/require "fs"))
-(def path (js/require "path"))
+(defonce fs (js/require "fs"))
+(defonce path (js/require "path"))
+(defonce process (js/require "process"))
+
+(defonce App (.-app (js/require "electron")))
 
 (defn new-window
   []
@@ -36,7 +39,12 @@
 
 (defn- on-saved
   [err]
-  (prn err))
+  (if 
+    (instance? js/Error err)
+    (do 
+      (prn err)
+      (.exit App -2))
+    (.exit App 0)))
 
 (defn- save-buffer-to-file
   [buffer file-name]
@@ -64,12 +72,21 @@
     (.savePage contents save-html-path "HTMLComplete" go-take-snapshot)))
 
 (defn- on-app-ready
-  []
-  (load "" save))
+  [load-url]
+  (load load-url save))
 
 (defn -main
   [& args]
-  (let [App (.-app (js/require "electron"))]
-    (.on App "ready" on-app-ready)))
+  ;; find `--load-url` argv
+  (if-let [load-url-pair (first(filter #(= 0 (.indexOf % "--load-url=")) args))]
+    (let [load-url (.substring load-url-pair (count "--load-url="))]
+      (prn (+ "about to load..." load-url))
+      (.on App "ready" #(on-app-ready load-url)))
+    ;; invalid argvs
+    (.exit App -1)))  
 
-(set! *main-cli-fn* -main)
+(defn- __main__
+  []
+  (apply -main (js->clj (.-argv process))))
+
+(set! *main-cli-fn* __main__)
