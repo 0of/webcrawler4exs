@@ -5,8 +5,7 @@ defmodule Gatherer do
     import Supervisor.Spec, warn: false
 
     children = [
-      # Define workers and child supervisors to be supervised
-      # worker(Simple.Worker, [arg1, arg2, arg3])
+    	worker(RethinkDB.Connection, [[name: Application.fetch_env!(:db, :name), host: 'localhost', port: 28015]])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
