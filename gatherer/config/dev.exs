@@ -8,4 +8,4 @@ config :sugar, Gatherer.Router,
   ],
   https: false
 
-config :db, name: "pages", host: "localhost", port: 28015
+config :db, host: "localhost", port: 28015
