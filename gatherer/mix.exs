@@ -14,7 +14,8 @@ defmodule Gatherer.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :sugar]]
+    [mod: {Gatherer, []},
+     applications: [:logger, :sugar]]
   end
 
   # Dependencies can be Hex packages:
@@ -27,6 +28,7 @@ defmodule Gatherer.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{ :sugar, "~> 0.4.6" }]
+    [{ :sugar, "~> 0.4.6" },
+     {:rethinkdb, "~> 0.4.0"}]
   end
 end
